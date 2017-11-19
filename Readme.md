@@ -50,7 +50,7 @@ enable=1
 yum install -y nginx
 ```
 
-3.  Firewall Configuration and Nging execute
+3.  Firewall Configuration and Nginx execute
 
 ```
 firewall -cmd --permanent --zone=public  --add-service=http // http open
