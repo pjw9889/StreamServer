@@ -33,7 +33,7 @@ Source : home / 계정 ID / Src에 임시 저장
 1.  Nginx repo Add
 
 ```
-vi /etc/yuum.repos.d/nginx.repo
+vi /etc/yum.repos.d/nginx.repo
 ```
 
 ```
