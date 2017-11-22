@@ -1,4 +1,4 @@
-# 나만의 스트리밍 서버 만들기
+나만의 스트리밍 서버 만들기
 
 
 
@@ -22,35 +22,76 @@ IP : 공인 IP
 
 SSL : 서버와 웹 클라이언트 간 통신시 암호를 위해서 준비
 
-Source : home / 계정 ID / Src에 임시 저장
+Source : /src에 저장
+
+
+
+nginx : http://nginx.org/
+
+
+
+nginx-rtmp
+
+```
+git clone https://github.com/sergey-dryabzhinsky/nginx-rtmp-module  
+```
+
+
+
+openssl
+
+```
+https://www.openssl.org/source/
+```
+
+
+
+ffmpeg
+
+```
+wget https://raw.githubusercontent.com/q3aql/ffmpeg-install/master/ffmpeg-install
+```
 
 
 
 ## Setup & Configuration
 
+1.  Nginx Setup
 
 
-1.  Nginx repo Add
-
-```
-vi /etc/yum.repos.d/nginx.repo
-```
 
 ```
-[nginx]
-name=nginx repo
-baseurl=http://nginx.org/package/centos/7/$basearch // nginx.org/package/OS/OSRELEASE/$basearch
-gpgcheck=0
-enable=1
+tar -zxvf nginx-1.12.2.tar.gz
+yum install -y pcre* zlib*
+./configure --prefix=/etc/nginx --add-module=/src/nginx-rtmp-module --with-openssl=/src/openssl-1.0.2m --with-http_ssl_module --with-debug --with-http_sub_module
+make
+make install
 ```
 
-2.  Nginx setup
+
+
+2. cors issue 해소를 위해 /etc/nginx에 crossdomain.xml 추가
 
 ```
-yum install -y nginx
+== crossdomain.xml ==
+<?xml version="1.0" ?>
+<cross-domain-policy>
+<allow-access-from domain="*" />
+</cross-domain-policy>
 ```
 
-3.  Firewall Configuration and Nginx execute
+
+
+3.  Make /etc/init.d/nginx
+
+```
+vi /etc/init.d/nginx // Upload additional content
+sed -i -e 's/\r//g' /etc/init.d/nginx
+```
+
+
+
+4. Firewall Configuration and Nginx execute
 
 ```
 firewall-cmd --permanent --zone=public  --add-service=http // http open
@@ -58,36 +99,6 @@ firewall-cmd --permanent --zone=public  --add-service=https // https open
 firewall-cmd --reload
 
 systemctl start nginx
-systemctl enable nginx // when computer boot, auto start
-```
-
-4. Nginx-rtmp-module setup
-
-```
-wget https://github.com/arut/nginx-rtmp-module/archive/master.zip
-unzip master.zip
-```
-
-5. ffmpeg setup
-
-```
-wget http://ffmpeg.org/release/ffmpeg-3.4.tar.bz2 // find version in http://ffmpeg.org
-tar -xvjf ffmpeg-3.4.tar.bz2
-wget http://www.tortall.net/projects/yasm/releases/yasm-1.3.0.tar.gz // recently releases version 1.3.0
-tar -zxvf yasm-1.3.0.tar.gz
-
-cd yasm-1.3.0 // yasm configure, install
-make
-make install
-
-cd ffmpeg-3.4 // ffmpeg configure, install
-./configure 
-make
-make install
-
-// if finish all setup, make test case
-ffmpeg -i test.mp3 -f wav test.wav // -i filename.mp3 -f wav filename.wav
-
-// If you want to install more codecs, See https://trac.ffmpeg.org/wiki/CompilationGuide/Centos
+chkconfig name on // when computer boot, auto start
 ```
 
