@@ -53,9 +53,9 @@ yum install -y nginx
 3.  Firewall Configuration and Nginx execute
 
 ```
-firewall -cmd --permanent --zone=public  --add-service=http // http open
-firewall -cmd --permanent --zone=public  --add-service=https // https open
-firewall -cmd --reload
+firewall-cmd --permanent --zone=public  --add-service=http // http open
+firewall-cmd --permanent --zone=public  --add-service=https // https open
+firewall-cmd --reload
 
 systemctl start nginx
 systemctl enable nginx // when computer boot, auto start
