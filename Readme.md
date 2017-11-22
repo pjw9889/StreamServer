@@ -1,4 +1,4 @@
-나만의 스트리밍 서버 만들기
+# 나만의 스트리밍 서버 만들기
 
 
 
@@ -26,11 +26,11 @@ Source : /src에 저장
 
 
 
-nginx : http://nginx.org/
+### nginx : http://nginx.org/
 
 
 
-nginx-rtmp
+### nginx-rtmp
 
 ```
 git clone https://github.com/sergey-dryabzhinsky/nginx-rtmp-module  
@@ -38,7 +38,7 @@ git clone https://github.com/sergey-dryabzhinsky/nginx-rtmp-module
 
 
 
-openssl
+### openssl
 
 ```
 https://www.openssl.org/source/
@@ -46,7 +46,7 @@ https://www.openssl.org/source/
 
 
 
-ffmpeg
+### ffmpeg
 
 ```
 wget https://raw.githubusercontent.com/q3aql/ffmpeg-install/master/ffmpeg-install
@@ -56,14 +56,15 @@ wget https://raw.githubusercontent.com/q3aql/ffmpeg-install/master/ffmpeg-instal
 
 ## Setup & Configuration
 
+
+
 1.  Nginx Setup
-
-
 
 ```
 tar -zxvf nginx-1.12.2.tar.gz
 yum install -y pcre* zlib*
-./configure --prefix=/etc/nginx --add-module=/src/nginx-rtmp-module --with-openssl=/src/openssl-1.0.2m --with-http_ssl_module --with-debug --with-http_sub_module
+./configure --prefix=/etc/nginx --add-module=/src/nginx-rtmp-module
+--with-openssl=/src/openssl-1.0.2m --with-http_ssl_module --with-debug --with-http_sub_module
 make
 make install
 ```
@@ -99,6 +100,6 @@ firewall-cmd --permanent --zone=public  --add-service=https // https open
 firewall-cmd --reload
 
 systemctl start nginx
-chkconfig name on // when computer boot, auto start
+chkconfig nginx on // when computer boot, auto start
 ```
 
