@@ -95,11 +95,22 @@ sed -i -e 's/\r//g' /etc/init.d/nginx
 4. Firewall Configuration and Nginx execute
 
 ```
-firewall-cmd --permanent --zone=public  --add-service=http // http open
-firewall-cmd --permanent --zone=public  --add-service=https // https open
+firewall-cmd --permanent --zone=public --add-service=http // http open
+firewall-cmd --permanent --zone=public --add-service=https // https open
+firewall-cmd --permanent --zone=public --add-port=1395/tcp // rtmp port open
+firewall-cmd --permanent --zone=public --add-port=8080/tcp
 firewall-cmd --reload
 
 systemctl start nginx
 chkconfig nginx on // when computer boot, auto start
+```
+
+
+
+5. FFmpeg Setup
+
+```
+chmod a+x ffmpeg-install
+./ffmpeg-install --install release
 ```
 
